@@ -4,6 +4,7 @@ import com.example.demo.models.Book;
 import com.example.demo.models.Ticket;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,18 +66,28 @@ public class DbService {
         return tickets;
     }
 
-    public List<Ticket> getFilteredTickets(String goingFrom, String goingTo) {
+    public List<Ticket> getFilteredTickets(String goingFrom, String goingTo, LocalDate dateWhen, LocalDate dateBack, String price) {
         List<Ticket> filteredTickets = new ArrayList<>();
         String sql = "SELECT id, going_from, going_to, date_when, date_back, price FROM tickets WHERE 1=1";
 
-        // Проверяем, есть ли фильтр goingFrom
         if (goingFrom != null && !goingFrom.isEmpty()) {
             sql += " AND going_from = ?";
         }
 
-        // Проверяем, есть ли фильтр goingTo
         if (goingTo != null && !goingTo.isEmpty()) {
             sql += " AND going_to = ?";
+        }
+
+        if (dateWhen != null && dateBack != null) {
+            sql += " AND date_when BETWEEN ? AND ?";
+        } else if (dateWhen != null) {
+            sql += " AND date_when >= ?";
+        } else if (dateBack != null) {
+            sql += " AND date_back <= ?";
+        }
+
+        if (price != null && !price.isEmpty()) {
+            sql += " AND price = ?";
         }
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -84,13 +95,25 @@ public class DbService {
 
             int parameterIndex = 1;
 
-            // Устанавливаем параметры фильтров, если они заданы
             if (goingFrom != null && !goingFrom.isEmpty()) {
                 stmt.setString(parameterIndex++, goingFrom);
             }
 
             if (goingTo != null && !goingTo.isEmpty()) {
-                stmt.setString(parameterIndex, goingTo);
+                stmt.setString(parameterIndex++, goingTo);
+            }
+
+            if (dateWhen != null && dateBack != null) {
+                stmt.setDate(parameterIndex++, Date.valueOf(dateWhen));
+                stmt.setDate(parameterIndex++, Date.valueOf(dateBack));
+            } else if (dateWhen != null) {
+                stmt.setDate(parameterIndex++, Date.valueOf(dateWhen));
+            } else if (dateBack != null) {
+                stmt.setDate(parameterIndex++, Date.valueOf(dateBack));
+            }
+
+            if (price != null && !price.isEmpty()) {
+                stmt.setString(parameterIndex, price);
             }
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -111,6 +134,5 @@ public class DbService {
 
         return filteredTickets;
     }
-
 
 }

@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.TicketsController" prefHeight="400.0" prefWidth="600.0">
     <VBox alignment="TOP_LEFT" spacing="10">
         <HBox spacing="10">
@@ -19,6 +20,23 @@
             <Label text="Filter by Going To:" />
             <TextField fx:id="goingToFilter" />
         </HBox>
+        <HBox spacing="10">
+            <Label text="Filter by Date When:" />
+            <DatePicker fx:id="dateWhenFilter" />
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Filter by Date Back:" />
+            <DatePicker fx:id="dateBackFilter" />
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Filter by Price (From):" />
+            <TextField fx:id="priceFromFilter" />
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Filter by Price (To):" />
+            <TextField fx:id="priceToFilter" />
+        </HBox>
+
         <HBox spacing="10">
             <Button text="Filter" onAction="#filterTickets" />
         </HBox>
