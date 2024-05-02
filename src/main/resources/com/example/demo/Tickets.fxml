@@ -4,24 +4,58 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.demo.TicketsController" prefHeight="400.0" prefWidth="600.0">
-    <TableView fx:id="ticketsTable" layoutX="10" layoutY="10" prefHeight="380.0" prefWidth="580.0">
-        <columns>
-            <TableColumn text="ID" prefWidth="50.0" fx:id="idColumn">
-                <cellValueFactory>
-                    <PropertyValueFactory property="id"/>
-                </cellValueFactory>
-            </TableColumn>
-            <TableColumn text="Name" prefWidth="130.0" fx:id="nameColumn">
-                <cellValueFactory>
-                    <PropertyValueFactory property="name"/>
-                </cellValueFactory>
-            </TableColumn>
-            <TableColumn text="Author" prefWidth="130.0" fx:id="authorColumn">
-                <cellValueFactory>
-                    <PropertyValueFactory property="author"/>
-                </cellValueFactory>
-            </TableColumn>
-        </columns>
-    </TableView>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.TicketsController" prefHeight="400.0" prefWidth="600.0">
+    <VBox alignment="TOP_LEFT" spacing="10">
+        <HBox spacing="10">
+            <Label text="Filter by Going From:" />
+            <TextField fx:id="goingFromFilter" />
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Filter by Going To:" />
+            <TextField fx:id="goingToFilter" />
+        </HBox>
+        <HBox spacing="10">
+            <Button text="Filter" onAction="#filterTickets" />
+        </HBox>
+        <!-- Ваша таблица здесь -->
+        <TableView fx:id="ticketsTable" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+            <columns>
+                <TableColumn text="ID" prefWidth="50.0" fx:id="idColumn">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Going From" prefWidth="130.0" fx:id="goingFromColumn">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="goingFrom"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Going To" prefWidth="130.0" fx:id="goingToColumn">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="goingTo"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Date When" prefWidth="130.0" fx:id="dateWhenColumn">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="dateWhen"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Date Back" prefWidth="130.0" fx:id="dateBackColumn">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="dateBack"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Price" prefWidth="100.0" fx:id="priceColumn">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="price"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </VBox>
 </AnchorPane>
