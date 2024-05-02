@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<TabPane fx:id="tabPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AccountController" style="-fx-padding: 10;">
+    <tabs>
+        <Tab text="Login">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
+                    <TextField fx:id="userNameTextField" maxWidth="200" promptText="Username" text="adilzhan" style="-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+                    <PasswordField fx:id="passwordPasswordField" maxWidth="200" promptText="Password" text="1234" style="-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+                    <Button text="Login" maxWidth="200" onAction="#loginButtonOnAction" style="-fx-background-color: darkblue; -fx-text-fill: white;" />
+                    <Label fx:id="loginMessageLabel" textFill="red" />
+                </VBox>
+            </content>
+        </Tab>
+        <Tab text="Register">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
+                    <TextField fx:id="registerUserNameTextField" maxWidth="200" promptText="Username" style="-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+                    <PasswordField fx:id="registerPasswordPasswordField" maxWidth="200" promptText="Password" style="-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+                    <TextField fx:id="emailTextField" maxWidth="200" promptText="Email" style="-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+                    <TextField fx:id="creditCardNumberTextField" maxWidth="200" promptText="Credit Card Number" style="-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+                    <Button text="Register" maxWidth="200" onAction="#registrationButtonOnAction" style="-fx-background-color: darkgreen; -fx-text-fill: white;" />
+                    <Label fx:id="registrationMessageLabel" textFill="red" />
+                </VBox>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>
