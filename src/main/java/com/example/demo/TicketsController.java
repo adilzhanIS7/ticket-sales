@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +33,11 @@ public class TicketsController {
 
     public void initialize() {
         loadTickets();
+
+        priceFromFilter.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("\\d*") ? change : null)));
+        priceToFilter.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("\\d*") ? change : null)));
     }
 
     private void loadTickets() {
@@ -46,19 +52,19 @@ public class TicketsController {
         String goingTo = goingToFilter.getText();
         LocalDate dateWhen = dateWhenFilter.getValue();
         LocalDate dateBack = dateBackFilter.getValue();
-        String priceFrom = priceFromFilter.getText();
-        String priceTo = priceToFilter.getText();
+        int priceFrom = 0;
+        int priceTo = 0;
 
-        List<Ticket> filteredTickets = dbService.getFilteredTickets(goingFrom, goingTo, dateWhen, dateBack, "");
+        if (!priceFromFilter.getText().isEmpty()) {
+            priceFrom = Integer.parseInt(priceFromFilter.getText());
+        }
+        if (!priceToFilter.getText().isEmpty()) {
+            priceTo = Integer.parseInt(priceToFilter.getText());
+        }
+
+        List<Ticket> filteredTickets = dbService.getFilteredTickets(goingFrom.toUpperCase(), goingTo.toUpperCase(), dateWhen, dateBack, priceFrom, priceTo);
         ObservableList<Ticket> observableFilteredTickets = FXCollections.observableArrayList(filteredTickets);
         ticketsTable.setItems(observableFilteredTickets);
     }
 
-    private String dateToString(LocalDate date) {
-        if (date != null) {
-            return date.toString();
-        } else {
-            return null;
-        }
-    }
 }

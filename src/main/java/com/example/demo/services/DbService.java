@@ -66,7 +66,7 @@ public class DbService {
         return tickets;
     }
 
-    public List<Ticket> getFilteredTickets(String goingFrom, String goingTo, LocalDate dateWhen, LocalDate dateBack, String price) {
+    public List<Ticket> getFilteredTickets(String goingFrom, String goingTo, LocalDate dateWhen, LocalDate dateBack, int priceFrom, int priceTo) {
         List<Ticket> filteredTickets = new ArrayList<>();
         String sql = "SELECT id, going_from, going_to, date_when, date_back, price FROM tickets WHERE 1=1";
 
@@ -86,8 +86,12 @@ public class DbService {
             sql += " AND date_back <= ?";
         }
 
-        if (price != null && !price.isEmpty()) {
-            sql += " AND price = ?";
+        if (priceFrom > 0 && priceTo > 0) {
+            sql += " AND price BETWEEN ? AND ?";
+        } else if (priceFrom > 0) {
+            sql += " AND price >= ?";
+        } else if (priceTo > 0) {
+            sql += " AND price <= ?";
         }
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -112,8 +116,13 @@ public class DbService {
                 stmt.setDate(parameterIndex++, Date.valueOf(dateBack));
             }
 
-            if (price != null && !price.isEmpty()) {
-                stmt.setString(parameterIndex, price);
+            if (priceFrom > 0 && priceTo > 0) {
+                stmt.setInt(parameterIndex++, priceFrom);
+                stmt.setInt(parameterIndex++, priceTo);
+            } else if (priceFrom > 0) {
+                stmt.setInt(parameterIndex++, priceFrom);
+            } else if (priceTo > 0) {
+                stmt.setInt(parameterIndex++, priceTo);
             }
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -134,5 +143,4 @@ public class DbService {
 
         return filteredTickets;
     }
-
 }
