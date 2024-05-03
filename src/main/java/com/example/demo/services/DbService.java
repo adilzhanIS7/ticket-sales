@@ -122,23 +122,23 @@ public class DbService {
         return filteredTickets;
     }
 
-    public boolean AuthenticateUser(String username, String password) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+    public int AuthenticateUser(String username, String password) {
+        String sql = "SELECT id FROM users WHERE username = ? AND password = ?";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    int count = rs.getInt(1);
-                    return count > 0;
+                    return rs.getInt("id");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0; // Если пользователя не найдено, возвращаем 0
     }
+
 
     public boolean SaveUser(String username, String password, String email, String creditCardNumber) {
         String sql = "INSERT INTO users (username, password, email, card_number) VALUES (?, ?, ?, ?)";

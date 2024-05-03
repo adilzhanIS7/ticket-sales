@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.services.AuthenticationService;
 import com.example.demo.services.DbService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,12 +31,19 @@ public class AccountController {
     @FXML
     private Label registrationMessageLabel;
     private DbService DbService = new DbService();
+    private AuthenticationService AuthenticationService = new AuthenticationService();
 
     public void loginButtonOnAction() {
         if (userNameTextField.getText().isBlank() || passwordPasswordField.getText().isBlank()) {
             loginMessageLabel.setText("Please enter the User Name and Password");
         } else {
-            if (authenticateUser(userNameTextField.getText(), passwordPasswordField.getText())) {
+            String userName = userNameTextField.getText();
+            String password = passwordPasswordField.getText();
+            int userId = DbService.AuthenticateUser(userName, password);
+            if (userId != 0) {
+                String token = com.example.demo.services.AuthenticationService.generateToken(userId);
+                com.example.demo.services.AuthenticationService.saveTokenToFile(token);
+                System.out.println(com.example.demo.services.AuthenticationService.getUserIdFromToken(token));
                 openTicketSalesWindow();
             } else {
                 loginMessageLabel.setText("Invalid username or password. Would you like to register?");
@@ -60,10 +68,6 @@ public class AccountController {
         } else {
             registerUser(username, password, email, creditCardNumber);
         }
-    }
-
-    private boolean authenticateUser(String username, String password) {
-        return DbService.AuthenticateUser(username, password);
     }
 
     private void registerUser(String username, String password, String email, String creditCardNumber) {
