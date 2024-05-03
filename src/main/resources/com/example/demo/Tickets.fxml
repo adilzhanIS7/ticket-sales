@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.TicketsController" prefHeight="600.0" prefWidth="800.0">
     <VBox alignment="TOP_LEFT" spacing="10">
+        <Button fx:id="showPurchasedTicketsButton" text="Показать приобретенные билеты" onAction="#showPurchasedTickets"/>
         <HBox spacing="10">
             <Label text="Filter by Going From:" />
             <TextField fx:id="goingFromFilter" />

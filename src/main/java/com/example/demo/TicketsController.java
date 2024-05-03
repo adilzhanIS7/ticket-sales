@@ -6,8 +6,13 @@ import com.example.demo.services.DbService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,6 +21,7 @@ public class TicketsController {
     public TextField priceFromFilter;
     @FXML
     public TextField priceToFilter;
+    public Button showPurchasedTicketsButton;
     @FXML
     private TableView<Ticket> ticketsTable;
     @FXML
@@ -91,4 +97,30 @@ public class TicketsController {
         ticketsTable.setItems(observableFilteredTickets);
     }
 
+    @FXML
+    private void showPurchasedTickets() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/PurchasedTickets.fxml"));
+            Parent root = loader.load();
+
+            PurchasedTicketsController controller = loader.getController();
+
+            // Загрузка данных о приобретенных билетах
+            String token = AuthenticationService.getTokenFromFile();
+            int userId = AuthenticationService.getUserIdFromToken(token);
+            List<Ticket> purchasedTickets = dbService.getPurchasedTickets(userId);
+            controller.setPurchasedTickets(purchasedTickets);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Your Tickets");
+            stage.show();
+
+            // Закрытие текущего окна
+            Stage currentStage = (Stage) showPurchasedTicketsButton.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.PurchasedTicketsController">
+
+    <TableView fx:id="purchasedTicketsTable" prefHeight="400.0" prefWidth="800.0">
+        <columns>
+            <TableColumn text="ID" prefWidth="50.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Going From" prefWidth="130.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="goingFrom"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Going To" prefWidth="130.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="goingTo"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Date When" prefWidth="130.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="dateWhen"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Date Back" prefWidth="130.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="dateBack"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Price" prefWidth="100.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="price"/>
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+    <Button text="Назад" layoutX="350.0" layoutY="410.0" onAction="#handleBackButton"/>
+
+</AnchorPane>

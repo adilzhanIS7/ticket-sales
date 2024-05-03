@@ -168,4 +168,32 @@ public class DbService {
             e.printStackTrace();
         }
     }
+
+    public List<Ticket> getPurchasedTickets(int userId) {
+        List<Ticket> purchasedTickets = new ArrayList<>();
+        String sql = "SELECT t.id, t.going_from, t.going_to, t.date_when, t.date_back, t.price " +
+                "FROM tickets t JOIN users_tickets ut ON t.id = ut.ticket_id " +
+                "WHERE ut.user_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Ticket ticket = new Ticket(
+                            rs.getInt("id"),
+                            rs.getString("going_from"),
+                            rs.getString("going_to"),
+                            rs.getDate("date_when"), // Преобразование java.sql.Date в java.time.LocalDate
+                            rs.getDate("date_back"),
+                            rs.getBigDecimal("price"));
+                    purchasedTickets.add(ticket);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return purchasedTickets;
+    }
 }
