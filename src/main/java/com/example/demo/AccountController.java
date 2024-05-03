@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.services.DbService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,13 +29,14 @@ public class AccountController {
     private TextField creditCardNumberTextField;
     @FXML
     private Label registrationMessageLabel;
+    private DbService DbService = new DbService();
 
     public void loginButtonOnAction() {
         if (userNameTextField.getText().isBlank() || passwordPasswordField.getText().isBlank()) {
             loginMessageLabel.setText("Please enter the User Name and Password");
         } else {
             if (authenticateUser(userNameTextField.getText(), passwordPasswordField.getText())) {
-                openTicketSalesWindow();  // Открыть новое окно после успешного входа
+                openTicketSalesWindow();
             } else {
                 loginMessageLabel.setText("Invalid username or password. Would you like to register?");
             }
@@ -61,27 +63,13 @@ public class AccountController {
     }
 
     private boolean authenticateUser(String username, String password) {
-        File file = new File("users.txt");
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userDetails = line.split(" ");
-                if (userDetails[0].equals(username) && userDetails[1].equals(password)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            loginMessageLabel.setText("An error occurred while reading user data.");
-        }
-        return false;
+        return DbService.AuthenticateUser(username, password);
     }
 
     private void registerUser(String username, String password, String email, String creditCardNumber) {
-        File file = new File("users.txt");
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(username + " " + password + " " + email + " " + creditCardNumber + "\n");
+        if (DbService.SaveUser(username, password, email, creditCardNumber)) {
             registrationMessageLabel.setText("Registered successfully!");
-        } catch (IOException e) {
+        } else {
             registrationMessageLabel.setText("An error occurred while registering the user.");
         }
     }

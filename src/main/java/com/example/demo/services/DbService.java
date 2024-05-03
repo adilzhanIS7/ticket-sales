@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Book;
 import com.example.demo.models.Ticket;
 
 import java.sql.*;
@@ -19,27 +18,6 @@ public class DbService {
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to the database", e);
         }
-    }
-
-    public List<Book> getAllBooks() {
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT id, name, author FROM books";
-
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Book book = new Book(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("author"));
-                books.add(book);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return books;
     }
 
     public List<Ticket> getAllTickets() {
@@ -142,5 +120,39 @@ public class DbService {
         }
 
         return filteredTickets;
+    }
+
+    public boolean AuthenticateUser(String username, String password) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean SaveUser(String username, String password, String email, String creditCardNumber) {
+        String sql = "INSERT INTO users (username, password, email, card_number) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, email);
+            stmt.setString(4, creditCardNumber);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
