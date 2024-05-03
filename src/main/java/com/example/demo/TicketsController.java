@@ -5,10 +5,7 @@ import com.example.demo.services.DbService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,6 +35,30 @@ public class TicketsController {
                 (change.getControlNewText().matches("\\d*") ? change : null)));
         priceToFilter.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("\\d*") ? change : null)));
+
+        TableColumn<Ticket, Void> buyColumn = new TableColumn<>("Купить");
+        buyColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button buyButton = new Button("Купить");
+
+            {
+                buyButton.setOnAction(event -> {
+                    Ticket ticket = getTableView().getItems().get(getIndex());
+                    // Здесь можно добавить код для выполнения покупки билета
+                    System.out.println("Покупка билета: " + ticket.getId());
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(buyButton);
+                }
+            }
+        });
+        ticketsTable.getColumns().add(buyColumn);
     }
 
     private void loadTickets() {
