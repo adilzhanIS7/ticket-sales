@@ -196,4 +196,17 @@ public class DbService {
         }
         return purchasedTickets;
     }
+
+    public static boolean deleteTicket(int ticketId) {
+        String sql = "DELETE FROM users_tickets WHERE ticket_id = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, ticketId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
