@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.TicketsController" prefHeight="400.0" prefWidth="600.0">
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.TicketsController" prefHeight="600.0" prefWidth="800.0">
     <VBox alignment="TOP_LEFT" spacing="10">
         <HBox spacing="10">
             <Label text="Filter by Going From:" />
@@ -33,8 +33,8 @@
         <HBox spacing="10">
             <Button text="Filter" onAction="#filterTickets" />
         </HBox>
-        <!-- Ваша таблица здесь -->
-        <TableView fx:id="ticketsTable" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+        <TableView fx:id="ticketsTable" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
             <columns>
                 <TableColumn text="ID" prefWidth="50.0" fx:id="idColumn">
                     <cellValueFactory>

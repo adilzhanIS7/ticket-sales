@@ -4,6 +4,7 @@ import com.example.demo.models.Ticket;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,9 +137,8 @@ public class DbService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0; // Если пользователя не найдено, возвращаем 0
+        return 0;
     }
-
 
     public boolean SaveUser(String username, String password, String email, String creditCardNumber) {
         String sql = "INSERT INTO users (username, password, email, card_number) VALUES (?, ?, ?, ?)";
@@ -154,5 +154,18 @@ public class DbService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void saveUserTicket(int userId, int ticketId) {
+        String sql = "INSERT INTO users_tickets (user_id, ticket_id, created_at) VALUES (?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, ticketId);
+            stmt.setObject(3, LocalDateTime.now());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

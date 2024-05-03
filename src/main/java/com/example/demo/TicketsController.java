@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.models.Ticket;
+import com.example.demo.services.AuthenticationService;
 import com.example.demo.services.DbService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,8 +44,10 @@ public class TicketsController {
             {
                 buyButton.setOnAction(event -> {
                     Ticket ticket = getTableView().getItems().get(getIndex());
-                    // Здесь можно добавить код для выполнения покупки билета
                     System.out.println("Покупка билета: " + ticket.getId());
+                    String token = AuthenticationService.getTokenFromFile();
+                    int userId = AuthenticationService.getUserIdFromToken(token);
+                    DbService.saveUserTicket(userId, ticket.getId());
                 });
             }
 
